@@ -1,7 +1,7 @@
 require "azure_enum/version"
-require 'erb'
-require 'httpclient'
-require 'nokogiri'
+require "erb"
+require "httpclient"
+require "nokogiri"
 
 module AzureEnum
   class Federation
@@ -22,11 +22,10 @@ module AzureEnum
       @redirect = res.header["Location"][0]
     end
 
-
     def enumerate_autodisc
       httpsdomains = [
-              "https://#{@domain}/autodiscover/autodiscover.svc",
-              "https://autodiscover.#{@domain}/autodiscover/autodiscover.svc"
+        "https://#{@domain}/autodiscover/autodiscover.svc",
+        "https://autodiscover.#{@domain}/autodiscover/autodiscover.svc"
       ]
 
       httpsdomains.unshift @redirect if @redirect
@@ -37,32 +36,24 @@ module AzureEnum
           content = { "Content-Type" => "text/xml; charset=utf-8" }
           res = http.post(url, xml, content)
           @xml_text = res.content
-          return
+          return @xml_text
+          last
         rescue
           next
         end
       end
     end
-
-    def xml_pretty
-      xsl =<<XSL
-  <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
-
-  <xsl:strip-space elements="*"/>
-  <xsl:template match="/">
-    <xsl:copy-of select="."/>
-  </xsl:template>
-
-  </xsl:stylesheet>
-XSL
-
-      doc = Nokogiri::XML(@xml_text)
-      xslt = Nokogiri::XSLT(xsl)
-      out = xslt.transform(doc)
-      out.to_xml
+    def getdomains
+      fail "enumumerate_autodisc not called yet" unless @xml_text
+       tree = Nokogiri.parse(@xml_text)
+       tree.xpath(
+         "//ad:GetFederationInformationResponseMessage/ad:Response/ad:Domains/ad:Domain",
+         "ad": "http://schemas.microsoft.com/exchange/2010/Autodiscover")
+         .map do |node|
+            node.text
+       end
     end
+
     private
     class Discovery
       def initialize(domain, url)
@@ -82,10 +73,10 @@ XSL
   end
   class << self
     def federated(domain)
-      f = Federation.new(domain)
-      f.check_redirect
-      f.enumerate_autodisc
-      puts f.xml_pretty
+      e = Federation.new(domain)
+      e.check_redirect
+      e.enumerate_autodisc
+      e.getdomains
     end
   end
 end

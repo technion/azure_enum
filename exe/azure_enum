@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require "azure_enum"
+
+if (ARGV.length == 0)
+  warn "Please provide domain to enumerate on command line. eg azure_enum lolware.net"
+  exit
+end
+
+puts "Please wait while the given domain is enumerated."
+puts AzureEnum.federated(ARGV[0])
+

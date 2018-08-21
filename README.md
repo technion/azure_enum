@@ -1,8 +1,8 @@
 # AzureEnum
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/azure_enum`. To experiment with that code, run `bin/console` for an interactive prompt.
+This Ruby Gem assists in enumeration of Office 365 federated domains. This can allow you to identify domains associated with a business, not easily identified through traditional means.
 
-
+The time this process takes can vary from a few seconds to a few minutes depending on the hosting server.
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -21,11 +21,21 @@ Or install it yourself as:
 
 ## Usage
 
-    $ ./bin/console
-irb(main):001:0> AzureEnum.federated("lolware.net")
-          <Domain>lolzware.onmicrosoft.com</Domain>
-          <Domain>lolware.net</Domain>
+You can use this gem from within an application:
 
+```
+require "azure_enum"
+x = AzureEnum.federated("lolware.net")
+=> ["lolzware.onmicrosoft.com", "lolware.net"]
+```
+
+Or by installing and running the binary:
+```
+bundle exec ./bin/azure_enum lolware.net
+Please wait while the given domain is enumerated.
+lolzware.onmicrosoft.com
+lolware.net
+```
 
 ## Development
 
@@ -35,7 +45,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/azure_enum.
+Bug reports and pull requests are welcome on GitHub at https://github.com/technion/azure_enum.
 
 ## License
 
