@@ -65,7 +65,8 @@ module AzureEnum
       end
     end
     def get_xml(domain, url)
-      template = File.read("discovery.xml.erb")
+      path = File.dirname __dir__
+      template = File.read(File.join path, "discovery.xml.erb")
       renderer = ERB.new(template)
       discovery = Discovery.new(domain, url)
       renderer.result(discovery.get_binding)
