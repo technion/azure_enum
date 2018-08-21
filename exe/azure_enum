@@ -8,5 +8,10 @@ if (ARGV.length == 0)
 end
 
 puts "Please wait while the given domain is enumerated."
-puts AzureEnum.federated(ARGV[0])
+domains = AzureEnum.federated(ARGV[0])
+if (!domains || domains == [])
+  puts "Unfortunately this domain cannot be enumerated"
+  exit
+end
 
+puts domains

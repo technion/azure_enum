@@ -1,2 +1,11 @@
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+Metrics/LineLength:
+  Max: 100
+Metrics/MethodLength:
+  Max: 25
+
+Naming/AccessorMethodName:
+  Exclude:
+    - 'lib/azure_enum.rb'
+
