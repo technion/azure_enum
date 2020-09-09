@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Enumerate Office 365 tenancies for federated domains.}
   spec.description   = %q{External enumeration toolkit to identify organisation relationships in Office 365.}
-  spec.homepage      = "https://github.com/technion"
+  spec.homepage      = "https://github.com/technion/azure_enum"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
@@ -25,5 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_dependency "httpclient", "~> 2.8.0"
-  spec.add_dependency "nokogiri", "~> 1.8.0"
+  spec.add_dependency "nokogiri", "~> 1.10.0"
 end

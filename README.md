@@ -31,7 +31,7 @@ x = AzureEnum.federated("lolware.net")
 
 Or by installing and running the binary:
 ```
-bundle exec ./bin/azure_enum lolware.net
+$ azure_enum lolware.net
 Please wait while the given domain is enumerated.
 lolzware.onmicrosoft.com
 lolware.net

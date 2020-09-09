@@ -25,19 +25,28 @@ module AzureEnum
       @redirect = res.header["Location"][0]
     end
 
-    def enumerate_autodisc
-      httpsdomains = [
+    def autodisc
+      # These are the default autodiscover domains.
+      [
         "https://autodiscover.#{@domain}/autodiscover/autodiscover.svc",
         "https://#{@domain}/autodiscover/autodiscover.svc"
       ]
+    end
 
+    def enumerate_autodisc(httpsdomains = autodisc)
       httpsdomains.unshift @redirect if @redirect
+      @redirect = nil
       httpsdomains.each do |url|
         xml = get_xml(@domain, url)
         begin
           http = HTTPClient.new
           content = { "Content-Type" => "text/xml; charset=utf-8" }
           res = http.post(url, xml, content)
+          # In the event of a second redirect we are on the right path
+          # Recurse this function for the correct result
+          if res.status_code == 302
+            return enumerate_autodisc [res.header['Location'][0]]
+          end
           @xml_text = res.content
           return true
           # It is bad style to rescue "all" errors. However, it turns out there is a practically
